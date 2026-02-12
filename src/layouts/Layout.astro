@@ -2,23 +2,51 @@
 import '../styles/global.css';
 
 interface Props {
-	title: string;
+  title: string;
+  description?: string; // Opcional, pero recomendado
+  lang?: string;
 }
 
-const { title } = Astro.props;
+const { 
+  title, 
+  description = "Expert plumbing services in Jacksonville, FL. Available 24/7 for emergencies, leak repairs, and remodeling. Call 904-678-1775.",
+  lang = "en"
+} = Astro.props;
+
+// URL de la imagen para compartir (usaremos el hero-bg como fallback)
+// Nota: En producción, asegúrate de que esta imagen exista en public/ o usa una URL completa
+const socialImage = "/hero-bg.jpg"; 
 ---
 
 <!doctype html>
-<html lang="es" class="scroll-smooth">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Olveras Plumbing - Servicios de fontanería 24/7 en Jacksonville. Reparaciones, instalaciones y remodelaciones." />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body class="bg-white">
-		<slot />
-	</body>
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Olveras Plumbing" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(socialImage, Astro.url)} />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(socialImage, Astro.url)} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+  </head>
+  <body class="font-sans text-slate-800 bg-white">
+    <slot />
+  </body>
 </html>

@@ -5,14 +5,14 @@ import Header from '../../components/Header.astro';
 import Hero from '../../components/Hero.astro';
 import Services from '../../components/Services.astro';
 import Showcase from '../../components/Showcase.astro';
-import Reviews from '../../components/Reviews.astro'; // <--- Nuevo
-import Footer from '../../components/Footer.astro';   // <--- Nuevo
-import ContactForm from '../../components/ContactForm';
-
+import Reviews from '../../components/Reviews.astro';
+import ContactForm from '../../components/ContactForm'; // React Component
+import Footer from '../../components/Footer.astro';
+import FloatingWhatsApp from '../../components/FloatingWhatsApp.astro'; // <--- NUEVO
 
 import { ui, defaultLang } from '../../i18n/ui';
 
-// --- RUTAS ---
+// --- RUTAS ESTÁTICAS (i18n) ---
 export function getStaticPaths() {
   return [
     { params: { lang: 'en' } },
@@ -20,12 +20,21 @@ export function getStaticPaths() {
   ];
 }
 
-// --- LÓGICA IDIOMA ---
+// --- LÓGICA DE IDIOMA ---
 const { lang } = Astro.params;
 const currentLang = (lang as keyof typeof ui) || defaultLang;
 const t = ui[currentLang];
 
-// --- DATOS HEADER & HERO ---
+// --- SEO (META TAGS) ---
+const seoTitle = currentLang === 'es' 
+  ? "Olveras Plumbing | Fontanero 24/7 en Jacksonville" 
+  : "Olveras Plumbing | 24/7 Plumber in Jacksonville";
+
+const seoDescription = currentLang === 'en'
+  ? "Professional plumbing in Jacksonville 32216. 24/7 Emergency repairs, water heaters, leak detection, and complete bathroom remodeling. Licensed experts."
+  : "Plomería profesional en Jacksonville 32216. Reparaciones de emergencia 24/7, calentadores, detección de fugas y remodelación completa de baños. Expertos locales.";
+
+// --- DATOS: HEADER & HERO ---
 const headerTexts = {
   emergency: t['header.emergency'],
   call: t['header.call']
@@ -39,7 +48,7 @@ const heroTexts = {
   btnServices: t['hero.btn.services']
 };
 
-// --- DATOS SERVICIOS (SVG Icons) ---
+// --- DATOS: SERVICIOS (Iconos SVG incluidos) ---
 const icons = {
   filtration: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>`,
   remodel: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>`,
@@ -73,7 +82,7 @@ const servicesContent = currentLang === 'en' ? {
   ]
 };
 
-// --- DATOS SHOWCASE ---
+// --- DATOS: GALERÍA ---
 const showcaseTexts = currentLang === 'en' ? {
   title: "Our Work Speaks for Itself",
   subtitle: "Explore our recent projects. We take pride in both the beautiful finishes and the technical precision behind the walls.",
@@ -86,7 +95,7 @@ const showcaseTexts = currentLang === 'en' ? {
   tabRough: "Instalación Técnica"
 };
 
-// --- DATOS REVIEWS (NUEVO) ---
+// --- DATOS: RESEÑAS ---
 const reviewsContent = currentLang === 'en' ? {
   title: "Trusted by Locals",
   subtitle: "We don't just fix pipes; we build relationships. Here is what our neighbors in Jacksonville say.",
@@ -105,9 +114,7 @@ const reviewsContent = currentLang === 'en' ? {
   ]
 };
 
-// --- DATOS CONTACTO (Nuevo) ---
-const FORMSPREE_ID = "mgolopqp"; 
-
+// --- DATOS: CONTACTO ---
 const contactTexts = currentLang === 'en' ? {
   title: "Get a Free Quote",
   subtitle: "Fill out the form below and we will get back to you within 24 hours.",
@@ -134,7 +141,7 @@ const contactTexts = currentLang === 'en' ? {
   error: "Algo salió mal. Por favor intenta de nuevo o llámanos."
 };
 
-// --- DATOS FOOTER (NUEVO) ---
+// --- DATOS: FOOTER ---
 const footerTexts = currentLang === 'en' ? {
   aboutTitle: "Quick Links",
   aboutText: "Professional plumbing services in Jacksonville, FL. Dedicated to quality craftsmanship and 24/7 availability.",
@@ -148,11 +155,11 @@ const footerTexts = currentLang === 'en' ? {
 };
 ---
 
-
-
-
-
-<Layout title={currentLang === 'es' ? "Olveras Plumbing | Fontanero 24/7" : "Olveras Plumbing | 24/7 Plumber"}>
+<Layout 
+  title={seoTitle} 
+  description={seoDescription}
+  lang={currentLang}
+>
   
   <Header texts={headerTexts} />
   
@@ -173,8 +180,7 @@ const footerTexts = currentLang === 'en' ? {
       reviews={reviewsContent.reviews}
     />
 
-<section id="contact" class="py-24 bg-olveras-blue relative overflow-hidden">
-      
+    <section id="contact" class="py-24 bg-olveras-blue relative overflow-hidden">
       <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
       
       <div class="container mx-auto px-4 relative z-10">
@@ -236,7 +242,7 @@ const footerTexts = currentLang === 'en' ? {
 
     <Footer texts={footerTexts} />
 
-    <div class="fixed bottom-4 right-4 bg-white p-2 rounded-lg shadow-lg border border-gray-200 z-50 flex gap-2 text-sm font-bold">
+    <div class="fixed bottom-4 right-4 bg-white p-2 rounded-lg shadow-lg border border-gray-200 z-40 flex gap-2 text-sm font-bold opacity-90 hover:opacity-100 transition-opacity">
       <a 
         href="/en" 
         class={`px-3 py-1 rounded transition-colors ${currentLang === 'en' ? 'bg-olveras-blue text-white' : 'text-gray-500 hover:bg-gray-100'}`}
@@ -250,6 +256,9 @@ const footerTexts = currentLang === 'en' ? {
         🇲🇽 ES
       </a>
     </div>
+
+    <FloatingWhatsApp lang={currentLang} />
+
   </main>
 
 </Layout>
