@@ -29,7 +29,7 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     await transporter.sendMail({
       from: `"Web Olveras" <${import.meta.env.SMTP_USER}>`,
-      to: "tucorreo@ejemplo.com", // Cambia esto o usa variable
+      to: `${import.meta.env.SMTP_USER}`, // Cambia esto o usa variable
       subject: `Nuevo Lead: ${name}`,
       text: `Nombre: ${name}\nTeléfono: ${phone}\nMensaje: ${message}`,
       html: `
