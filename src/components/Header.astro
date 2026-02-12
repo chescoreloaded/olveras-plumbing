@@ -1,0 +1,44 @@
+---
+import { Image } from 'astro:assets';
+import logoImage from '../assets/logo.jpg'; 
+
+// Definimos que este componente espera recibir textos (Props)
+interface Props {
+  texts: {
+    emergency: string;
+    // Puedes agregar más si el menú tuviera textos como "Home", "About"
+  }
+}
+
+const { texts } = Astro.props;
+const phone = "904-678-1775";
+---
+
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-md border-b border-olveras-silver/30">
+  <div class="container mx-auto px-4 py-2 flex justify-between items-center">
+    
+    <a href="/" class="flex items-center gap-3 group">
+      <div class="w-16 h-16 overflow-hidden rounded-full border-2 border-olveras-blue shadow-sm">
+        <Image src={logoImage} alt="Olveras Plumbing Logo" class="w-full h-full object-cover" width={80} height={80} />
+      </div>
+      <div class="hidden sm:block">
+        <h1 class="text-xl font-black text-olveras-blue leading-none tracking-tight">OLVERAS</h1>
+        <span class="text-sm font-bold text-olveras-silver tracking-widest">PLUMBING</span>
+      </div>
+    </a>
+
+    <div class="hidden lg:flex gap-2 text-sm font-bold text-gray-500 mr-4">
+      <a href="/" class="hover:text-olveras-blue transition-colors">EN</a> | 
+      <a href="/es" class="hover:text-olveras-blue transition-colors">ES</a>
+    </div>
+
+    <a href={`tel:${phone.replace(/-/g, '')}`} class="bg-olveras-red hover:bg-red-700 text-white font-bold py-2 px-6 rounded-full flex items-center gap-2 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+      <span class="text-xl animate-pulse">📞</span>
+      <div class="flex flex-col items-start leading-none">
+        <span class="text-[10px] uppercase opacity-90">{texts.emergency}</span>
+        <span class="text-lg tracking-wide">{phone}</span>
+      </div>
+    </a>
+
+  </div>
+</header>

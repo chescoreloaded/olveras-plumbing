@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+  /* Paleta Olveras Plumbing */
+  --color-olveras-blue: #0B2545;  /* Navy Blue del escudo */
+  --color-olveras-red: #E31B23;   /* Rojo de Emergencia */
+  --color-olveras-silver: #C0C0C0; /* Borde plateado */
+  --color-olveras-dark: #1A1A1A;   /* Texto principal */
+
+  /* Fuentes */
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+/* Estilos base */
+body {
+  background-color: white;
+  color: var(--color-olveras-dark);
+}

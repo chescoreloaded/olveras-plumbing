@@ -1,0 +1,50 @@
+---
+interface ServiceItem {
+  title: string;
+  description: string;
+  icon: string; // Pasaremos el SVG como string para no complicarnos con librerías extra
+}
+
+interface Props {
+  title: string;
+  subtitle: string;
+  items: ServiceItem[];
+}
+
+const { title, subtitle, items } = Astro.props;
+---
+
+<section id="services" class="py-20 bg-gray-50">
+  <div class="container mx-auto px-4">
+    
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 class="text-4xl font-black text-olveras-blue mb-4 tracking-tight">
+        {title}
+      </h2>
+      <p class="text-xl text-gray-600">
+        {subtitle}
+      </p>
+      <div class="w-24 h-1 bg-olveras-red mx-auto mt-6 rounded-full"></div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {items.map((service) => (
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+          
+          <div class="w-14 h-14 bg-blue-50 text-olveras-blue rounded-xl flex items-center justify-center mb-6 group-hover:bg-olveras-blue group-hover:text-white transition-colors">
+            <Fragment set:html={service.icon} />
+          </div>
+
+          <h3 class="text-2xl font-bold text-olveras-blue mb-3">
+            {service.title}
+          </h3>
+          
+          <p class="text-gray-500 leading-relaxed">
+            {service.description}
+          </p>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>

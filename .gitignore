@@ -1,0 +1,37 @@
+# --- Dependencias (Node.js) ---
+# Son miles de archivos que se pueden reinstalar con 'pnpm install'
+node_modules/
+.pnpm-store/
+
+# --- Producción y Build ---
+# La carpeta donde Astro genera la web final. No se sube porque se genera al compilar.
+dist/
+
+# --- Astro ---
+# Archivos de caché y tipos generados por Astro
+.astro/
+
+# --- SEGURIDAD Y SECRETOS (¡Muy Importante!) ---
+# Ignora el archivo que tiene tus contraseñas de Hostinger
+public/config.php
+
+# Ignora archivos de variables de entorno (por si usas .env en el futuro)
+.env
+.env.production
+.env.development
+.env.local
+
+# --- Sistema Operativo ---
+# Basura que crean Mac y Windows
+.DS_Store
+Thumbs.db
+
+# --- Logs de errores ---
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- Editor (VS Code) ---
+# Opcional: A veces es mejor no subir tus configuraciones personales
+.vscode/

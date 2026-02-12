@@ -1,0 +1,37 @@
+---
+import GalleryTabs from './GalleryTabs';
+
+// 1. Cargar imágenes usando Glob (Eager = carga inmediata para obtener metadatos)
+const finishedFiles = import.meta.glob('/src/assets/showcase/finished/*.{jpeg,jpg,png}', { eager: true });
+const roughFiles = import.meta.glob('/src/assets/showcase/rough/*.{jpeg,jpg,png}', { eager: true });
+
+// 2. Función helper para formatear los datos para React
+const getImages = (files: Record<string, any>) => {
+  return Object.values(files).map((file) => ({
+    src: file.default.src, // Astro ya procesó la ruta aquí
+    alt: "Olveras Plumbing Work"
+  }));
+};
+
+const finishedImages = getImages(finishedFiles);
+const roughImages = getImages(roughFiles);
+
+// 3. Props para i18n
+interface Props {
+  labels: {
+    title: string;
+    subtitle: string;
+    tabFinished: string;
+    tabRough: string;
+  }
+}
+
+const { labels } = Astro.props;
+---
+
+<GalleryTabs 
+  client:visible 
+  finishedImages={finishedImages} 
+  roughImages={roughImages} 
+  labels={labels}
+/>

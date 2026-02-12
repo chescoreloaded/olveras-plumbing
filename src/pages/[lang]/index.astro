@@ -1,0 +1,255 @@
+---
+// --- IMPORTS ---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Hero from '../../components/Hero.astro';
+import Services from '../../components/Services.astro';
+import Showcase from '../../components/Showcase.astro';
+import Reviews from '../../components/Reviews.astro'; // <--- Nuevo
+import Footer from '../../components/Footer.astro';   // <--- Nuevo
+import ContactForm from '../../components/ContactForm';
+
+
+import { ui, defaultLang } from '../../i18n/ui';
+
+// --- RUTAS ---
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'es' } },
+  ];
+}
+
+// --- LÓGICA IDIOMA ---
+const { lang } = Astro.params;
+const currentLang = (lang as keyof typeof ui) || defaultLang;
+const t = ui[currentLang];
+
+// --- DATOS HEADER & HERO ---
+const headerTexts = {
+  emergency: t['header.emergency'],
+  call: t['header.call']
+};
+
+const heroTexts = {
+  badge: t['hero.badge'],
+  titleSpan: t['hero.title.span'],
+  subtitle: t['hero.subtitle'],
+  btnCall: t['hero.btn.call'],
+  btnServices: t['hero.btn.services']
+};
+
+// --- DATOS SERVICIOS (SVG Icons) ---
+const icons = {
+  filtration: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>`,
+  remodel: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>`,
+  pipe: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" /></svg>`,
+  drain: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>`,
+  heater: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" /></svg>`,
+  emergency: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>`
+};
+
+const servicesContent = currentLang === 'en' ? {
+  title: "Our Professional Services",
+  subtitle: "From emergency repairs to complete home renovations, we handle it all with precision and care.",
+  items: [
+    { title: "Water Softeners & Filtration", description: "Installation of whole-house filtration systems to protect your health and appliances.", icon: icons.filtration },
+    { title: "Bathroom Remodeling", description: "Complete renovations: From demolition to luxury finishes (Tile, Vanity, Showers).", icon: icons.remodel },
+    { title: "PEX Repiping", description: "Replace old, corroded pipes with modern, durable PEX piping systems.", icon: icons.pipe },
+    { title: "Drain Cleaning", description: "Professional unclogging and cleaning for sinks, showers, and main lines.", icon: icons.drain },
+    { title: "Water Heaters", description: "Installation and repair of tankless and traditional water heater units.", icon: icons.heater },
+    { title: "24/7 Emergencies", description: "Immediate response for leaks, bursts, and urgent plumbing failures.", icon: icons.emergency },
+  ]
+} : {
+  title: "Nuestros Servicios",
+  subtitle: "Desde reparaciones de emergencia hasta renovaciones completas, lo manejamos todo con precisión.",
+  items: [
+    { title: "Filtros y Suavizadores", description: "Instalación de sistemas de filtración para toda la casa. Protege tu salud y tuberías.", icon: icons.filtration },
+    { title: "Remodelación de Baños", description: "Renovaciones completas: Desde la demolición hasta acabados de lujo (Azulejo, Duchas).", icon: icons.remodel },
+    { title: "Re-tubería (Repiping)", description: "Reemplazo de tuberías viejas y oxidadas con sistema moderno PEX.", icon: icons.pipe },
+    { title: "Limpieza de Drenajes", description: "Desatasco profesional y limpieza profunda para lavabos y drenajes principales.", icon: icons.drain },
+    { title: "Calentadores de Agua", description: "Instalación y reparación de calentadores tradicionales y sin tanque (Tankless).", icon: icons.heater },
+    { title: "Emergencias 24/7", description: "Respuesta inmediata para fugas, roturas y fallos urgentes de plomería.", icon: icons.emergency },
+  ]
+};
+
+// --- DATOS SHOWCASE ---
+const showcaseTexts = currentLang === 'en' ? {
+  title: "Our Work Speaks for Itself",
+  subtitle: "Explore our recent projects. We take pride in both the beautiful finishes and the technical precision behind the walls.",
+  tabFinished: "Finished Projects",
+  tabRough: "Behind the Walls"
+} : {
+  title: "Nuestro Trabajo Habla por Sí Solo",
+  subtitle: "Explora nuestros proyectos recientes. Nos enorgullece tanto el acabado final como la precisión técnica detrás de las paredes.",
+  tabFinished: "Proyectos Terminados",
+  tabRough: "Instalación Técnica"
+};
+
+// --- DATOS REVIEWS (NUEVO) ---
+const reviewsContent = currentLang === 'en' ? {
+  title: "Trusted by Locals",
+  subtitle: "We don't just fix pipes; we build relationships. Here is what our neighbors in Jacksonville say.",
+  reviews: [
+    { name: "Sarah J.", text: "Saved us in the middle of the night! The water heater burst and they were here in 30 mins. Professional and clean.", stars: 5 },
+    { name: "Michael T.", text: "Incredible bathroom remodel. They handled everything from the new PEX piping to the vanity installation. Looks amazing.", stars: 5 },
+    { name: "David R.", text: "Best price I found for a whole house repipe. Honest work, no hidden fees. Highly recommended.", stars: 5 },
+  ]
+} : {
+  title: "Confianza Local",
+  subtitle: "No solo arreglamos tuberías, construimos relaciones. Esto dicen nuestros vecinos en Jacksonville.",
+  reviews: [
+    { name: "Sarah J.", text: "¡Nos salvaron a medianoche! El calentador se rompió y llegaron en 30 min. Muy profesionales y limpios.", stars: 5 },
+    { name: "Michael T.", text: "Remodelación de baño increíble. Hicieron todo, desde la tubería PEX hasta la instalación del mueble. Se ve genial.", stars: 5 },
+    { name: "David R.", text: "El mejor precio que encontré para cambiar toda la tubería de la casa. Trabajo honesto, sin cobros ocultos.", stars: 5 },
+  ]
+};
+
+// --- DATOS CONTACTO (Nuevo) ---
+const FORMSPREE_ID = "mgolopqp"; 
+
+const contactTexts = currentLang === 'en' ? {
+  title: "Get a Free Quote",
+  subtitle: "Fill out the form below and we will get back to you within 24 hours.",
+  name: "Full Name",
+  phone: "Phone Number",
+  message: "Tell us about your plumbing issue",
+  btnSend: "Send Message",
+  btnSending: "Sending...",
+  successTitle: "Message Sent!",
+  successMessage: "Thanks for reaching out! We will review your request and call you shortly.",
+  btnRetry: "Send another message",
+  error: "Something went wrong. Please try again or call us directly."
+} : {
+  title: "Solicita Presupuesto",
+  subtitle: "Llena el formulario y te contactaremos en menos de 24 horas.",
+  name: "Nombre Completo",
+  phone: "Número de Teléfono",
+  message: "Cuéntanos tu problema de plomería",
+  btnSend: "Enviar Mensaje",
+  btnSending: "Enviando...",
+  successTitle: "¡Mensaje Enviado!",
+  successMessage: "¡Gracias por contactarnos! Revisaremos tu solicitud y te llamaremos brevemente.",
+  btnRetry: "Enviar otro mensaje",
+  error: "Algo salió mal. Por favor intenta de nuevo o llámanos."
+};
+
+// --- DATOS FOOTER (NUEVO) ---
+const footerTexts = currentLang === 'en' ? {
+  aboutTitle: "Quick Links",
+  aboutText: "Professional plumbing services in Jacksonville, FL. Dedicated to quality craftsmanship and 24/7 availability.",
+  contactTitle: "Contact Us",
+  rights: "All rights reserved."
+} : {
+  aboutTitle: "Enlaces Rápidos",
+  aboutText: "Servicios profesionales de plomería en Jacksonville, FL. Dedicados a la calidad artesanal y disponibilidad 24/7.",
+  contactTitle: "Contáctanos",
+  rights: "Todos los derechos reservados."
+};
+---
+
+
+
+
+
+<Layout title={currentLang === 'es' ? "Olveras Plumbing | Fontanero 24/7" : "Olveras Plumbing | 24/7 Plumber"}>
+  
+  <Header texts={headerTexts} />
+  
+  <main>
+    <Hero texts={heroTexts} />
+    
+    <Services 
+      title={servicesContent.title} 
+      subtitle={servicesContent.subtitle} 
+      items={servicesContent.items}
+    />
+    
+    <Showcase labels={showcaseTexts} />
+
+    <Reviews 
+      title={reviewsContent.title}
+      subtitle={reviewsContent.subtitle}
+      reviews={reviewsContent.reviews}
+    />
+
+<section id="contact" class="py-24 bg-olveras-blue relative overflow-hidden">
+      
+      <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+      
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          
+          <div class="text-white space-y-8">
+            <span class="inline-block py-1 px-3 rounded bg-olveras-red/20 text-olveras-red font-bold text-sm tracking-widest uppercase border border-olveras-red/50">
+              {currentLang === 'en' ? 'Contact Us' : 'Contáctanos'}
+            </span>
+            
+            <h2 class="text-4xl md:text-5xl font-black leading-tight">
+              {currentLang === 'en' ? 'Need a Professional Plumber?' : '¿Necesitas un Plomero Experto?'}
+            </h2>
+            
+            <p class="text-gray-300 text-lg leading-relaxed max-w-lg">
+              {currentLang === 'en' 
+                ? "Don't let a small leak become a big disaster. We handle emergencies and planned renovations with the same dedication."
+                : "No dejes que una pequeña fuga se convierta en un desastre. Atendemos emergencias y remodelaciones con la misma dedicación."
+              }
+            </p>
+            
+            <div class="space-y-6 pt-4 border-t border-white/10">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center text-2xl shrink-0">📍</div>
+                <div>
+                  <h4 class="font-bold text-xl">Jacksonville, FL</h4>
+                  <p class="text-gray-400 text-sm">Serving 32216 and surrounding areas.</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center text-2xl shrink-0">📞</div>
+                <div>
+                  <h4 class="font-bold text-xl">904-678-1775</h4>
+                  <p class="text-gray-400 text-sm">Available 24/7 for emergencies.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center text-2xl shrink-0">📧</div>
+                <div>
+                  <h4 class="font-bold text-xl">Email Us</h4>
+                  <p class="text-gray-400 text-sm">olverasplumbing@gmail.com</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:pl-10">
+             <ContactForm 
+               client:visible 
+               texts={contactTexts} 
+             />
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <Footer texts={footerTexts} />
+
+    <div class="fixed bottom-4 right-4 bg-white p-2 rounded-lg shadow-lg border border-gray-200 z-50 flex gap-2 text-sm font-bold">
+      <a 
+        href="/en" 
+        class={`px-3 py-1 rounded transition-colors ${currentLang === 'en' ? 'bg-olveras-blue text-white' : 'text-gray-500 hover:bg-gray-100'}`}
+      >
+        🇺🇸 EN
+      </a>
+      <a 
+        href="/es" 
+        class={`px-3 py-1 rounded transition-colors ${currentLang === 'es' ? 'bg-olveras-blue text-white' : 'text-gray-500 hover:bg-gray-100'}`}
+      >
+        🇲🇽 ES
+      </a>
+    </div>
+  </main>
+
+</Layout>
