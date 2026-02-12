@@ -26,10 +26,9 @@ export default function ContactForm({ texts }: Props) {
     const formData = new FormData(e.currentTarget);
     
     try {
-      const response = await fetch('/send-mail.php', {
+      const response = await fetch('/api/send-mail', { // <--- La ruta nueva
         method: 'POST',
         body: formData,
-        // No necesitamos headers json porque FormData envía multipart/form-data automáticamente
       });
 
       if (response.ok) {
