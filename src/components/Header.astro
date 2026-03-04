@@ -1,18 +1,19 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
 import { Image } from 'astro:assets';
-import logoImage from '../assets/logo.png'; 
+import logoImage from '../assets/logo.png';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const currentPath = Astro.url.pathname;
-const switchUrl = lang === 'en' ? currentPath.replace(/^\/en/, '/es') : currentPath.replace(/^\/es/, '/en');
+const switchUrl = lang === 'en' ?
+  currentPath.replace(/^\/en/, '/es') : currentPath.replace(/^\/es/, '/en');
 const switchLabel = lang === 'en' ? 'ES' : 'EN';
 const finalSwitchUrl = switchUrl === currentPath ? (lang === 'en' ? '/es' : '/en') : switchUrl;
 ---
 
-<header class="sticky top-0 z-50 bg-white shadow-md border-b border-gray-100 h-16 md:h-20 transition-all overflow-visible">
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-md border-b border-gray-100 h-16 md:h-20 transition-all overflow-visible">
   <div class="container mx-auto px-4 h-full flex items-center justify-between relative">
     
     <a href={`/${lang}`} class="absolute top-0 left-4 z-50 group">

@@ -1,9 +1,10 @@
 ---
 import '../styles/global.css';
+import FloatingWhatsApp from '../components/FloatingWhatsApp.astro';
 
 interface Props {
   title: string;
-  description?: string; // Opcional, pero recomendado
+  description?: string;
   lang?: string;
 }
 
@@ -13,9 +14,7 @@ const {
   lang = "en"
 } = Astro.props;
 
-// URL de la imagen para compartir (usaremos el hero-bg como fallback)
-// Nota: En producción, asegúrate de que esta imagen exista en public/ o usa una URL completa
-const socialImage = "/hero-bg.jpg"; 
+const socialImage = "/hero-bg.jpg";
 ---
 
 <!doctype html>
@@ -48,5 +47,6 @@ const socialImage = "/hero-bg.jpg";
   </head>
   <body class="font-sans text-slate-800 bg-white">
     <slot />
+    <FloatingWhatsApp />
   </body>
 </html>

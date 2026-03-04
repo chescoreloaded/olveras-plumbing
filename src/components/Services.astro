@@ -31,8 +31,10 @@ const icons = {
 };
 
 // --- 3. DATOS DE CONTENIDO ---
-// 'image' usa las fotos perfectas. 'id' usa las categorías para filtrar la galería real.
-const servicesData = lang === 'en' ? [
+// 'image' usa las fotos perfectas.
+// 'id' usa las categorías para filtrar la galería real.
+const servicesData = lang === 'en' ?
+[
   { 
     id: 'filtration', 
     title: "Water Softeners & Filtration", 
@@ -144,7 +146,12 @@ const { title, subtitle } = Astro.props;
       {servicesData.map((item, index) => (
         <div class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-100 flex flex-col h-full animate-fade-in-up" style={`animation-delay: ${index * 100}ms`}>
           
-          <div class="relative h-56 overflow-hidden bg-gray-200">
+          {/* AQUÍ ESTÁ EL CAMBIO: El contenedor de la imagen ahora es un enlace (<a>) */}
+          <a 
+            href={`#showcase?category=${item.id}`}
+            onclick={`setTimeout(() => { window.location.hash = '#showcase?category=${item.id}'; }, 50)`}
+            class="block relative h-56 overflow-hidden bg-gray-200 cursor-pointer focus:outline-none focus:ring-4 focus:ring-[#E31B23]/50"
+          >
             <div class="absolute inset-0 bg-[#0B2545]/10 group-hover:bg-[#0B2545]/0 transition-colors duration-500 z-10 mix-blend-multiply"></div>
             
             <Image 
@@ -155,10 +162,10 @@ const { title, subtitle } = Astro.props;
               height={400}
               loading="lazy"
             />
-          </div>
+          </a>
 
-          <div class="relative px-8 h-0">
-            <div class="absolute -top-10 left-8 bg-[#E31B23] text-white p-4 rounded-xl shadow-lg shadow-red-900/20 group-hover:scale-110 transition-transform duration-300 flex items-center justify-center z-20 border-4 border-white">
+          <div class="relative px-8 h-0 pointer-events-none">
+            <div class="absolute -top-10 left-8 bg-[#E31B23] text-white p-4 rounded-xl shadow-lg shadow-red-900/20 group-hover:scale-110 transition-transform duration-300 flex items-center justify-center z-20 border-4 border-white pointer-events-auto">
               <div class="w-8 h-8" set:html={item.icon} />
             </div>
           </div>
